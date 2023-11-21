@@ -13,19 +13,23 @@ const Drivers = () => {
     image: "",
   });
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://localhost:5282/api/Drivers");
-      const data = await response.json();
-      setDrivers(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    // Fetch data when the component mounts
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5282/api/Drivers");
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setDrivers(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     fetchData();
   }, []);
 
